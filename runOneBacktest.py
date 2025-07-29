@@ -1,4 +1,4 @@
-from scrapeData import FearGreedBacktester
+from backtest import FearGreedBacktester
 
 def main():
     """Main function to run the backtest"""

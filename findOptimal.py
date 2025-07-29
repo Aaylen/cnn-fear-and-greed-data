@@ -2,7 +2,7 @@ import numpy as np
 from skopt import gp_minimize
 from skopt.space import Real
 from skopt.acquisition import gaussian_ei
-from scrapeData import FearGreedBacktester
+from backtest import FearGreedBacktester
 
 def bayesian_optimization():
     """

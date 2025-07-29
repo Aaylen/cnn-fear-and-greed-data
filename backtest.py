@@ -1,11 +1,10 @@
-import requests
-import json
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 import yfinance as yf
 from datetime import datetime, timedelta
 import warnings
+from scrapeCNNData import fetch_fear_greed_data
 warnings.filterwarnings('ignore')
 
 class FearGreedBacktester:
@@ -38,32 +37,14 @@ class FearGreedBacktester:
     def get_fear_greed_data(self):
         if self._fear_greed_df is not None:
             return self._fear_greed_df
+        data = fetch_fear_greed_data()
+        # Convert to DataFrame
+        df = pd.DataFrame(data)
+        df['date'] = pd.to_datetime(df['date'])
+        df['value'] = pd.to_numeric(df['value'])
+        df = df.sort_values('date').reset_index(drop=True)
+        return df
 
-        """Fetch fear and greed index data"""
-        url = "https://www.finhacker.cz/wp-content/custom-api/fear-greed-data.php"
-        headers = {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/133.0.0.0 Safari/537.36",
-            "Accept": "*/*",
-            "Referer": "https://www.finhacker.cz/fear-and-greed-index-historical-data-and-chart/",
-            "Accept-Language": "en-US,en;q=0.9",
-            "Accept-Encoding": "gzip, deflate, br",
-        }
-        
-        try:
-            response = requests.get(url, headers=headers)
-            data = response.json().get("agg", [])
-            
-            # Convert to DataFrame
-            df = pd.DataFrame(data)
-            df['date'] = pd.to_datetime(df['date'])
-            df['value'] = pd.to_numeric(df['value'])
-            df = df.sort_values('date').reset_index(drop=True)
-            self._fear_greed_df = df
-            return df
-        except Exception as e:
-            print(f"Error fetching fear/greed data: {e}")
-            return None
-    
     def get_sp500_data(self, start_date, end_date):
         if self._sp500_df is not None:
             return self._sp500_df
