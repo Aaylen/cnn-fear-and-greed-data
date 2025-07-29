@@ -1,14 +1,35 @@
-This program can be used for backtesting purpopses or for scraping CNN's Fear and Greed index
+CNN Fear & Greed Index Backtester
+This program can be used for:
 
-From scraping:
-+ This website has all of the CNN's historical data, so I scraped from them
-    + https://www.finhacker.cz/fear-and-greed-index-historical-data-and-chart/
-+ Just import the function how you normally would
-    + from scrapeCNNData import fetch_fear_greed_data
-+ This data has is not continuos, but they have around 4 or 5 data points per month going back to 2011
+Backtesting investment strategies
 
-For backtesting:
-+ The way I have it set up is you get an investing budget per week and then you 
-can choose how much of the budget to spend per week depending on the fear/greed index.
-If you spend less you can spend more the next weekm but either way DCA or active management will both have the ability to invest the same amount.
-+ Quick spoiler I tried finding the optimal combination which you can see in the results.txt, but it's not worth it to out perform DCA at least on the SPY.
+Scraping CNN’s Fear and Greed index data
+
+Scraping the Fear & Greed Index:
+This website has all of CNN's historical Fear & Greed data.
+
+Data is not continuous, but typically includes 4–5 data points per month going back to 2011.
+
+To use the scraper:
+
+python
+Copy
+Edit
+from scrapeCNNData import fetch_fear_greed_data
+
+Backtesting Strategy:
+The backtester assumes a fixed weekly investment budget.
+
+You decide how much of the budget to invest each week, based on the Fear & Greed index:
+
+Spend more when there is fear
+
+Spend less when there is greed
+
+Unspent budget rolls over to future weeks, allowing flexible investing.
+
+Both DCA (Dollar Cost Averaging) and active strategy have access to the same total capital over time.
+
+Spoiler:
+I tried optimizing the allocation strategy — see results.txt for details — but it's not worth trying to outperform DCA (at least on SPY).
+
